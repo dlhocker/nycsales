@@ -47,3 +47,74 @@ def toDateTime(S):
         dates.append(datetime.strptime(Slist[j],'%Y-%m-%d'))
     
     return dates
+
+
+import gdal
+from gdalconst import *
+from osgeo import osr
+
+def GetGeoInfo(FileName):
+    SourceDS = gdal.Open(FileName, GA_ReadOnly)
+    GeoT = SourceDS.GetGeoTransform()
+    Projection = osr.SpatialReference()
+    Projection.ImportFromWkt(SourceDS.GetProjectionRef())    
+    return GeoT, Projection
+
+def CreateGeoTiff(Name, Array, driver, 
+                  xsize, ysize, GeoT, Projection):
+    DataType = gdal.GDT_Float32
+    NewFileName = Name+'.tif'
+    # Set up the dataset
+    DataSet = driver.Create( NewFileName, xsize, ysize, 1, DataType )
+            # the '1' is for band 1.
+    DataSet.SetGeoTransform(GeoT)
+    DataSet.SetProjection( Projection.ExportToWkt() )
+    # Write the array
+    DataSet.GetRasterBand(1).WriteArray( Array )
+    return NewFileName
+
+def ReprojectCoords(x, y,src_srs,tgt_srs):
+    trans_coords=[]
+    transform = osr.CoordinateTransformation( src_srs, tgt_srs)
+    x,y,z = transform.TransformPoint(x, y)
+    return x, y
+
+def array_to_raster(array,fname):
+    """Array > Raster
+    Save a raster from a C order array.
+
+    :param array: ndarray
+    """
+    dst_filename = fname
+
+
+    # You need to get those values like you did.
+    x_pixels = 16  # number of pixels in x
+    y_pixels = 16  # number of pixels in y
+    PIXEL_SIZE = 3  # size of the pixel...        
+    x_min = 553648  
+    y_max = 7784555  # x_min & y_max are like the "top left" corner.
+    wkt_projection = 'a projection in wkt that you got from other file'
+
+    driver = gdal.GetDriverByName('GTiff')
+
+    dataset = driver.Create(
+        dst_filename,
+        x_pixels,
+        y_pixels,
+        1,
+        gdal.GDT_Float32, )
+
+    dataset.SetGeoTransform((
+        x_min,    # 0
+        PIXEL_SIZE,  # 1
+        0,                      # 2
+        y_max,    # 3
+        0,                      # 4
+        -PIXEL_SIZE))  
+
+    dataset.SetProjection(wkt_projection)
+    dataset.GetRasterBand(1).WriteArray(array)
+    dataset.FlushCache()  # Write to disk.
+    return dataset, dataset.GetRasterBand(1)  #If you need to return, remenber to return  also the dataset because the band don`t live without dataset.
+
