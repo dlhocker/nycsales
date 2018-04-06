@@ -49,6 +49,7 @@ def toDateTime(S):
     return dates
 
 
+# testing area. eventually want to export geotiffs from images
 import gdal
 from gdalconst import *
 from osgeo import osr
