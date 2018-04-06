@@ -2,6 +2,8 @@
 
 # repo contents
  - basic_stats.ipynb: python notebook demonstrating some basic statistics on the data
+ - clustering_examples.ipynb: some use of k-means to find ways to clump together pricing data, and use of kmeans to "create" new neighborhoods
+ - CNNclassifiers.ipynb: use of convolutional neural networks in Tensorflow to classify buildings as ranging from cheap to expensive (currently ~96% accurate) 
  - database_joins.ipynb: python notebook performing pandas joins of the sales data with geospatial data from building shapefile
  - nycsales.py: set of functions to help with joins, datetime formatting, and eventuall geotiff file creation
  - dataformat.sh: script to format the sales data (with headers) from excel to a friendly .csv format
