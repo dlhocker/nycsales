@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from geopy.geocoders import Nominatim
+#from geopy.geocoders import Nominatim
 import datetime
 
 def join_latlong(db,shapecsvname):
