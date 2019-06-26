@@ -9,6 +9,7 @@
  - dataformat.sh: script to format the sales data (with headers) from excel to a friendly .csv format
  - dataconvert.py: pandas conversion of .xls to .csv
  - pandashp.py: wrapper module from [ojdo](https://github.com/ojdo/python-tools) to read and write shapefiles. Used in the database_joins code
+ - shapelytools.py: more code from [ojdo](https://github.com/ojdo/python-tools) for shapefile manipulation.
 
 # data used
 The analysis is primarily looking at rolling sales data collection by the NYC department of finance from 2003 onward. The raw data in .xls format can be found at http://www1.nyc.gov/site/finance/taxes/property-rolling-sales-data.page. I have included a few examples files from 2015 in this repo.
